@@ -1,58 +1,80 @@
 
+/* -----  DEFINE VARIABLES ----- */
+
 var usertemp = document.getElementById("usertemp");
+var results = document.getElementById("convertedtemp");
 var button = document.getElementById("converter");
 var clear = document.getElementById("clear");
+
+
+/* -----  CONVERT TEMPS ----- */
 
 function toCelsius(usertemp) {
 	var c = (usertemp - 32)/1.8;
 	return (c).toFixed(1);
+	//toFixed(1) to display the first decimal point
 }
 
 function toFahrenheit(usertemp) {
 	var f = (usertemp * 1.8) + 32;
 	return Math.round(f);
+	//round(f) to round the degree up/down
 }
 
-//create a function called determineConverter
+
+/* -----  DETERMINE THE CONVERTER ----- */
+/* 	
+	Set temp to the user input value.
+	If celsius/farenheit is checked, then convert the user input into celsius/farenheit. 
+	Use an if statement to determine the color output.
+*/
+	
+
 function determineConverter(clickEvent) {
     
-	// set the variable temp to user input & parse the string into an integer
-    var temp = parseInt(usertemp.value);
-
-    //By using the HTML checked="checked", you no longer have an unselected radio button. You'll always have at least one checked.
-  
-/*	//if no radio buttons are selected, alert an error
-	if (document.getElementById("tempF").checked == false && 
-		document.getElementById("tempC").checked == false) {
-			alert("ERROR! Please choose an option.")
-
-	// if tempC radio button is checked, run the function toCelsius
-	} else*/
+	var temp = parseInt(usertemp.value);
 
 	 if (document.getElementById("tempC").checked) {
-		temp = toCelsius(temp);	
-		document.getElementById("convertedtemp").innerHTML = temp;
+		var temp = toCelsius(temp);	
 
-	// if tempF radio button is checked, run the function toFahrenheit
-	} else if (document.getElementById("tempF").checked) {
-		temp = toFahrenheit(temp);	
-		document.getElementById("convertedtemp").innerHTML = temp;
+			if (temp > 32) {
+				results.innerHTML = "<span class='red'>" + temp + " celsius" + "</span>"; 
+			} else if (temp < 0) {
+				results.innerHTML = "<span class='blue'>" + temp + " celsius" +  "</span>"; 
+			} else {
+				results.innerHTML = temp + "celsius";
+			}
+
+
+	} else {
+		var temp = toFahrenheit(temp);	
+
+			if (temp > 90) {
+				results.innerHTML = "<span class='red'>" + temp + " farenheit" + "</span>"; 
+			} else if (temp < 32) {
+				results.innerHTML = "<span class='blue'>" + temp + " farenheit" + "</span>"; 
+			} else {
+				results.innerHTML = temp + "farenheit";
+			}
+	
 	}
 
 	//console.log("event", clickEvent);
 }
 
+	
+/* -----  BUTTONS  ----- */
+
 //Go! Button
 button.addEventListener("click", determineConverter);
 
-//Press Enter to Run
 //The window object represents an open window in a browser.
 window.addEventListener("keypress", enterKey);
 
 function enterKey(e) {
 	if(e.keyCode == 13) {
 	determineConverter();
-	console.log("you pressed enter");
+	//console.log("you pressed enter");
 	}
 }
 
